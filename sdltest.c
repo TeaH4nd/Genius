@@ -4,22 +4,77 @@
 
 #include <SDL2/SDL.h>
 
-static const int width = 800;
-static const int height = 600;
+#define WIDTH 800
+#define HEIGHT 600
+#define WIDTH_REC (WIDTH / 5)
+#define HEIGHT_REC (HEIGHT / 5)
 
-void vermelho(SDL_Renderer *renderer){
 
-	SDL_Rect vermelho;
+void branco(SDL_Renderer *renderer){
+	SDL_Rect rec_branco;
 
-	vermelho.x = 10;
-	vermelho.y = 20;
-	vermelho.w = 5;
-	vermelho.h = 5;
+	rec_branco.w = WIDTH_REC;
+	rec_branco.h = HEIGHT_REC;
+	rec_branco.x = ((WIDTH_REC)*2);
+	rec_branco.y = ((HEIGHT_REC)*2);
 
-    SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
-    SDL_RenderFillRect( renderer, &vermelho);
+    SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
+    SDL_RenderFillRect( renderer, &rec_branco);
     SDL_RenderPresent(renderer);
 }
+
+void vermelho(SDL_Renderer *renderer){
+	SDL_Rect rec_vermelho;
+
+	rec_vermelho.w = WIDTH_REC;
+	rec_vermelho.h = HEIGHT_REC;
+	rec_vermelho.x = ((WIDTH_REC)*2);
+	rec_vermelho.y = ((HEIGHT_REC));
+
+    SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
+    SDL_RenderFillRect( renderer, &rec_vermelho);
+    SDL_RenderPresent(renderer);
+}
+
+void azul(SDL_Renderer *renderer){
+	SDL_Rect rec_azul;
+
+	rec_azul.w = WIDTH_REC;
+	rec_azul.h = HEIGHT_REC;
+	rec_azul.x = ((WIDTH_REC)*3);
+	rec_azul.y = ((HEIGHT_REC)*2);
+
+    SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
+    SDL_RenderFillRect( renderer, &rec_azul);
+    SDL_RenderPresent(renderer);
+}
+
+void amarelo(SDL_Renderer *renderer){
+	SDL_Rect rec_amarelo;
+
+	rec_amarelo.w = WIDTH_REC;
+	rec_amarelo.h = HEIGHT_REC;
+	rec_amarelo.x = ((WIDTH_REC)*2);
+	rec_amarelo.y = ((HEIGHT_REC)*3);
+
+    SDL_SetRenderDrawColor( renderer, 255, 255, 0, 255 );
+    SDL_RenderFillRect( renderer, &rec_amarelo);
+    SDL_RenderPresent(renderer);
+}
+
+void verde(SDL_Renderer *renderer){
+	SDL_Rect rec_verde;
+
+	rec_verde.w = WIDTH_REC;
+	rec_verde.h = HEIGHT_REC;
+	rec_verde.x = ((WIDTH_REC));
+	rec_verde.y = ((HEIGHT_REC)*2);
+
+    SDL_SetRenderDrawColor( renderer, 0, 255, 0, 255 );
+    SDL_RenderFillRect( renderer, &rec_verde);
+    SDL_RenderPresent(renderer);
+}
+
 
 int main(int argc, char **argv)
 {
@@ -27,12 +82,11 @@ int main(int argc, char **argv)
     SDL_Init(SDL_INIT_VIDEO);
 
     // Create a SDL window
-    SDL_Window *window = SDL_CreateWindow("Genius", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL);
+    SDL_Window *window = SDL_CreateWindow("Genius", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
 
     // Create a renderer (accelerated and in sync with the display refresh rate)
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
     bool running = true;
     SDL_Event event;
     while(running)
@@ -47,11 +101,16 @@ int main(int argc, char **argv)
 			
         }
 
+    	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         // Clear screen
         SDL_RenderClear(renderer);
 
         // Draw
+		branco(renderer);
 		vermelho(renderer);
+		azul(renderer);
+		amarelo(renderer);
+		verde(renderer);
 
         // Show what was drawn
         SDL_RenderPresent(renderer);
