@@ -4,80 +4,21 @@
 
 #include <SDL2/SDL.h>
 
+#include "libs/game.h"
+
 #define WIDTH 800
 #define HEIGHT 600
 #define WIDTH_REC (WIDTH / 5)
 #define HEIGHT_REC (HEIGHT / 5)
 
-
-void branco(SDL_Renderer *renderer){
-	SDL_Rect rec_branco;
-
-	rec_branco.w = WIDTH_REC;
-	rec_branco.h = HEIGHT_REC;
-	rec_branco.x = ((WIDTH_REC)*2);
-	rec_branco.y = ((HEIGHT_REC)*2);
-
-    SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
-    SDL_RenderFillRect( renderer, &rec_branco);
-    SDL_RenderPresent(renderer);
-}
-
-void vermelho(SDL_Renderer *renderer){
-	SDL_Rect rec_vermelho;
-
-	rec_vermelho.w = WIDTH_REC;
-	rec_vermelho.h = HEIGHT_REC;
-	rec_vermelho.x = ((WIDTH_REC)*2);
-	rec_vermelho.y = ((HEIGHT_REC));
-
-    SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
-    SDL_RenderFillRect( renderer, &rec_vermelho);
-    SDL_RenderPresent(renderer);
-}
-
-void azul(SDL_Renderer *renderer){
-	SDL_Rect rec_azul;
-
-	rec_azul.w = WIDTH_REC;
-	rec_azul.h = HEIGHT_REC;
-	rec_azul.x = ((WIDTH_REC)*3);
-	rec_azul.y = ((HEIGHT_REC)*2);
-
-    SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
-    SDL_RenderFillRect( renderer, &rec_azul);
-    SDL_RenderPresent(renderer);
-}
-
-void amarelo(SDL_Renderer *renderer){
-	SDL_Rect rec_amarelo;
-
-	rec_amarelo.w = WIDTH_REC;
-	rec_amarelo.h = HEIGHT_REC;
-	rec_amarelo.x = ((WIDTH_REC)*2);
-	rec_amarelo.y = ((HEIGHT_REC)*3);
-
-    SDL_SetRenderDrawColor( renderer, 255, 255, 0, 255 );
-    SDL_RenderFillRect( renderer, &rec_amarelo);
-    SDL_RenderPresent(renderer);
-}
-
-void verde(SDL_Renderer *renderer){
-	SDL_Rect rec_verde;
-
-	rec_verde.w = WIDTH_REC;
-	rec_verde.h = HEIGHT_REC;
-	rec_verde.x = ((WIDTH_REC));
-	rec_verde.y = ((HEIGHT_REC)*2);
-
-    SDL_SetRenderDrawColor( renderer, 0, 255, 0, 255 );
-    SDL_RenderFillRect( renderer, &rec_verde);
-    SDL_RenderPresent(renderer);
+bool XYInRect(const SDL_Rect rect, int x, int y){
+//	printf("x: %d\ny: %d\nrect.x: %d\nrect.y: %d\n", x, y, rect.x, rect.y);
+	return ( ( (x >= rect.x) && (x <= (rect.x + rect.w)) ) && ( (y >= rect.y) && (y <= (rect.y + rect.h)) ) );
 }
 
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv){
+	SDL_Rect rec_branco, rec_vermelho, rec_azul, rec_amarelo, rec_verde;
     // Initialize SDL
     SDL_Init(SDL_INIT_VIDEO);
 
@@ -99,18 +40,25 @@ int main(int argc, char **argv)
                 running = false;
             }
 			
+	    	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    	    // Clear screen
+        	SDL_RenderClear(renderer);
+
+	        // Draw
+			rec_branco = branco(renderer);
+			rec_vermelho = vermelho(renderer);
+			rec_azul = azul(renderer);
+			rec_amarelo = amarelo(renderer);
+			rec_verde = verde(renderer);
+
+			if(event.type == SDL_MOUSEBUTTONDOWN){
+				printf("%d %d\n", event.motion.x, event.motion.y);
+                if (XYInRect(rec_branco, event.motion.x, event.motion.y)){
+            		running = false;
+				}
+			}
         }
 
-    	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        // Clear screen
-        SDL_RenderClear(renderer);
-
-        // Draw
-		branco(renderer);
-		vermelho(renderer);
-		azul(renderer);
-		amarelo(renderer);
-		verde(renderer);
 
         // Show what was drawn
         SDL_RenderPresent(renderer);
