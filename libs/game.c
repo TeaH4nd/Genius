@@ -1,5 +1,7 @@
 #include "game.h"
 #include <time.h>
+#include <stdio.h>
+#include <stdbool.h>
 
 #include <SDL2/SDL.h>
 
@@ -15,6 +17,36 @@ int aleatorio(void){
 	//printf ("Random int: %d\n", randNum);
 	
 	return randNum;
+}
+
+bool criaJogo(tJogo *jogo, int tam){
+	tJogo *novo = (tJogo *) malloc(sizeof(tJogo));
+		
+	if(tam == 0){
+		jogo->cor = aleatorio();
+		return true;
+	}else{
+		novo->prox = NULL;
+		novo->cor = aleatorio();
+		while(jogo->prox != NULL){
+			jogo = jogo->prox;
+		}
+		jogo->prox = novo;
+		criaJogo(jogo, --tam);
+	}
+
+}
+
+void exibe(tJogo *LISTA){
+	tJogo *tmp;
+
+	tmp = LISTA->prox;
+	
+	while( tmp != NULL){
+		printf("%d ", tmp->cor);
+		tmp = tmp->prox;
+	}
+	printf("\n\n");
 }
 
 SDL_Rect branco(SDL_Renderer *renderer){

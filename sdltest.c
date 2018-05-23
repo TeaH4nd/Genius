@@ -6,20 +6,23 @@
 
 #include "libs/game.h"
 
-#define WIDTH 800
-#define HEIGHT 600
-#define WIDTH_REC (WIDTH / 5)
-#define HEIGHT_REC (HEIGHT / 5)
-
 bool XYInRect(const SDL_Rect rect, int x, int y){
-//	printf("x: %d\ny: %d\nrect.x: %d\nrect.y: %d\n", x, y, rect.x, rect.y);
 	return ( ( (x >= rect.x) && (x <= (rect.x + rect.w)) ) && ( (y >= rect.y) && (y <= (rect.y + rect.h)) ) );
 }
 
 
 int main(int argc, char **argv){
 	SDL_Rect rec_branco, rec_vermelho, rec_azul, rec_amarelo, rec_verde;
-    // Initialize SDL
+	int tamanho, tentativas;
+	tJogo *jogo = (tJogo *) malloc(sizeof(tJogo));
+	int i;
+
+	printf("Tamanho: ");
+	scanf("%d", &tamanho);
+	printf("Tentativas: ");
+	scanf("%d", &tentativas);
+
+	 // Initialize SDL
     SDL_Init(SDL_INIT_VIDEO);
 
     // Create a SDL window
@@ -29,7 +32,13 @@ int main(int argc, char **argv){
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     bool running = true;
+	bool iniciado = false;	
+
     SDL_Event event;
+	criaJogo(jogo, tamanho);
+	printf("exibe:\n");
+	exibe(jogo);
+
     while(running)
     {
         // Process events
@@ -51,18 +60,22 @@ int main(int argc, char **argv){
 			rec_amarelo = amarelo(renderer);
 			rec_verde = verde(renderer);
 
+
+			/*
 			if(event.type == SDL_MOUSEBUTTONDOWN){
 				printf("%d %d\n", event.motion.x, event.motion.y);
                 if (XYInRect(rec_branco, event.motion.x, event.motion.y)){
             		running = false;
 				}
 			}
-        }
+			*/
 
+        } //while eventos
+			
 
         // Show what was drawn
         SDL_RenderPresent(renderer);
-    }
+    } //while running
 
     // Release resources
     SDL_DestroyRenderer(renderer);
